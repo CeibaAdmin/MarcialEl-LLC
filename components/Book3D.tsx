@@ -20,11 +20,13 @@ export default function Book3D({
   className = "",
   float = false,
   maxTilt = 18,
+  badge,
 }: {
   book: Book;
   className?: string;
   float?: boolean;
   maxTilt?: number;
+  badge?: string;
 }) {
   const rx = useSpring(useMotionValue(0), { stiffness: 150, damping: 18 });
   const ry = useSpring(useMotionValue(0), { stiffness: 150, damping: 18 });
@@ -126,6 +128,12 @@ export default function Book3D({
               className="pointer-events-none absolute inset-0 mix-blend-screen"
               style={{ backgroundImage: glare }}
             />
+
+            {badge && (
+              <span className="absolute left-3 top-3 rounded-full bg-gold px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-night shadow-lg">
+                {badge}
+              </span>
+            )}
           </div>
         </motion.div>
       </div>

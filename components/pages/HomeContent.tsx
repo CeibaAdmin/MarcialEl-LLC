@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/Container";
 import Hero from "@/components/Hero";
 import BookCard from "@/components/BookCard";
@@ -9,6 +10,7 @@ import SectionHeading from "@/components/SectionHeading";
 import FeaturedSpotlight from "@/components/FeaturedSpotlight";
 import Marquee from "@/components/Marquee";
 import NewsletterForm from "@/components/NewsletterForm";
+import ComingSoon from "@/components/ComingSoon";
 import { books, featuredBooks } from "@/data/books";
 import { useLang } from "@/lib/i18n";
 
@@ -49,16 +51,26 @@ export default function HomeContent() {
       {/* Scroll-driven featured title */}
       <FeaturedSpotlight book={lead} />
 
+      {/* Coming soon */}
+      <ComingSoon />
+
       {/* Author band */}
       <section className="relative overflow-hidden bg-night-800 py-28">
         <Container className="relative grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <Reveal>
             <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-2xl border border-bone-soft/10">
-              {/* Portrait placeholder — drop a real photo at /public and swap this. */}
-              <div className="absolute inset-0 bg-gradient-to-br from-night-600 to-night-900" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-serif text-8xl text-gold/30">M</span>
-              </div>
+              <Image
+                src="/marcial.png"
+                alt="Marcial en una firma de libros"
+                fill
+                sizes="(max-width: 1024px) 90vw, 400px"
+                className="object-cover object-[center_20%]"
+                priority
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-t from-night-900/50 to-transparent"
+              />
             </div>
           </Reveal>
 

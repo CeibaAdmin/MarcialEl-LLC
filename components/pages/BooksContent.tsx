@@ -3,7 +3,8 @@
 import Container from "@/components/Container";
 import BooksGrid from "@/components/BooksGrid";
 import SectionHeading from "@/components/SectionHeading";
-import { books, genreList } from "@/data/books";
+import ComingSoon from "@/components/ComingSoon";
+import { availableBooks, genreList } from "@/data/books";
 import { useLang } from "@/lib/i18n";
 
 export default function BooksContent() {
@@ -23,9 +24,11 @@ export default function BooksContent() {
         </header>
 
         <div className="mt-16">
-          <BooksGrid books={books} genres={genreList()} />
+          <BooksGrid books={availableBooks} genres={genreList()} />
         </div>
       </Container>
+
+      <ComingSoon />
     </section>
   );
 }

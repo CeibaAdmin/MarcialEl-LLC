@@ -5,13 +5,13 @@ import Container from "@/components/Container";
 import Book3D from "@/components/Book3D";
 import BookCard from "@/components/BookCard";
 import Reveal from "@/components/Reveal";
-import { books, buyLinksFor, bookTitle, type Book } from "@/data/books";
+import { availableBooks, buyLinksFor, bookTitle, type Book } from "@/data/books";
 import { useLang } from "@/lib/i18n";
 
 export default function BookDetailContent({ book }: { book: Book }) {
   const { lang, t } = useLang();
   const links = buyLinksFor(book);
-  const others = books.filter((b) => b.slug !== book.slug).slice(0, 4);
+  const others = availableBooks.filter((b) => b.slug !== book.slug).slice(0, 4);
   const title = bookTitle(book, lang);
 
   return (

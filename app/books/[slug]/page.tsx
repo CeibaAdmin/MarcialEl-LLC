@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BookDetailContent from "@/components/pages/BookDetailContent";
-import { books, getBook } from "@/data/books";
+import { availableBooks, getBook } from "@/data/books";
 
 export function generateStaticParams() {
-  return books.map((book) => ({ slug: book.slug }));
+  return availableBooks.map((book) => ({ slug: book.slug }));
 }
 
 export async function generateMetadata({
@@ -25,6 +25,6 @@ export default async function BookDetailPage({
 }) {
   const { slug } = await params;
   const book = getBook(slug);
-  if (!book) notFound();
+  if (!book || book.comingSoon) notFound();
   return <BookDetailContent book={book} />;
 }

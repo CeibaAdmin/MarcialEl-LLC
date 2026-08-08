@@ -97,7 +97,14 @@ const dict = {
         "(MARCADOR DE POSICIÓN) Añade aquí la biografía real: de dónde viene el autor, qué lo llevó a escribir, los temas a los que regresa, y por qué eligió publicar bajo seudónimo.",
         "(MARCADOR DE POSICIÓN) Un último párrafo puede hablar del oficio y las influencias — los autores que lo formaron y qué pueden esperar los lectores de sus libros.",
       ],
-      quote: "«Escribo bajo otro nombre para que las historias lleguen sin mí de por medio.»",
+      quote: "«Las palabras despiertan, las ideas transforman, las historias permanecen.»",
+    },
+    coming: {
+      eyebrow: "En camino",
+      title: "Próximamente",
+      body: "Nuevos títulos en preparación. Suscríbete y serás el primero en saber cuándo salen.",
+      badge: "Próximamente",
+      notify: "Avísame cuando salga →",
     },
     contact: {
       nlEyebrow: "Mantente cerca",
@@ -195,7 +202,14 @@ const dict = {
         "(PLACEHOLDER) Add the real biography here: where the author grew up, what drew them to writing, the themes they return to, and why they chose to publish under a pseudonym.",
         "(PLACEHOLDER) A closing paragraph can speak to craft and influences — the writers who shaped them and what readers can expect from the books.",
       ],
-      quote: "“I write under another name so the stories can arrive without me in the way.”",
+      quote: "“Words awaken, ideas transform, stories remain.”",
+    },
+    coming: {
+      eyebrow: "On the way",
+      title: "Coming soon",
+      body: "New titles in the works. Subscribe and you'll be the first to know when they land.",
+      badge: "Coming soon",
+      notify: "Notify me when it's out →",
     },
     contact: {
       nlEyebrow: "Stay in the loop",
