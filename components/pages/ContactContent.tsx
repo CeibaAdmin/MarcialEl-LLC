@@ -51,9 +51,6 @@ export default function ContactContent() {
                   >
                     {site.email}
                   </a>
-                  <span className="ml-2 text-bone-soft/40">
-                    {t.contact.placeholderTag}
-                  </span>
                 </dd>
               </div>
               <div>
