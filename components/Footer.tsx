@@ -1,39 +1,64 @@
+"use client";
+
 import Link from "next/link";
 import Container from "./Container";
-import { nav, site } from "@/lib/site";
+import { site } from "@/lib/site";
+import { useLang } from "@/lib/i18n";
 
 export default function Footer() {
-  const year = 2026; // Update yearly, or wire to build-time date if preferred.
+  const { t } = useLang();
+  const year = 2026; // Update yearly if desired.
+
+  const nav = [
+    { href: "/", label: t.nav.home },
+    { href: "/books", label: t.nav.books },
+    { href: "/about", label: t.nav.about },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   return (
-    <footer className="mt-24 border-t border-ink/10 bg-paper-soft">
-      <Container className="flex flex-col gap-8 py-12 sm:flex-row sm:items-start sm:justify-between">
-        <div className="max-w-sm">
-          <p className="font-serif text-xl font-semibold text-ink">{site.penName}</p>
-          <p className="mt-2 text-sm leading-relaxed text-ink-faint">{site.tagline}</p>
+    <footer className="relative mt-32 border-t border-bone-soft/10 bg-night-800">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-24 left-1/2 h-48 w-[40rem] max-w-[90%] -translate-x-1/2 rounded-[50%] bg-gold/10 blur-3xl"
+      />
+      <Container className="relative">
+        <div className="flex flex-col gap-10 py-16 sm:flex-row sm:items-start sm:justify-between">
+          <div className="max-w-sm">
+            <p className="font-serif text-3xl font-semibold text-bone">
+              {site.penName}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-bone-soft/70">
+              {t.footer.tagline}
+            </p>
+            <Link href="/contact" className="btn-ghost mt-6">
+              {t.footer.joinList}
+            </Link>
+          </div>
+
+          <nav className="flex flex-col gap-3">
+            <p className="text-xs uppercase tracking-widest text-gold">
+              {t.footer.explore}
+            </p>
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm text-bone-soft/80 transition-colors hover:text-gold-light"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
         </div>
 
-        <nav className="flex flex-col gap-2">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm text-ink-soft transition-colors hover:text-burgundy"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </Container>
+        <div className="hairline" />
 
-      <div className="border-t border-ink/10">
-        <Container className="flex flex-col gap-2 py-6 text-xs text-ink-faint sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {site.legalName}. All rights reserved.
-          </p>
-          <p>Written under the pen name {site.penName}.</p>
-        </Container>
-      </div>
+        <div className="flex flex-col gap-2 py-8 text-xs text-bone-soft/50 sm:flex-row sm:items-center sm:justify-between">
+          <p>{t.footer.rights(year)}</p>
+          <p>{t.footer.penNote}</p>
+        </div>
+      </Container>
     </footer>
   );
 }

@@ -1,40 +1,67 @@
+"use client";
+
 import Link from "next/link";
 import type { Book } from "@/data/books";
-import BookCover from "./BookCover";
+import { bookTitle } from "@/data/books";
+import { useLang } from "@/lib/i18n";
+import Book3D from "./Book3D";
 
-export default function BookCard({
-  book,
-  priority = false,
-}: {
-  book: Book;
-  priority?: boolean;
-}) {
+export default function BookCard({ book }: { book: Book }) {
+  const { lang, t } = useLang();
+  const title = bookTitle(book, lang);
+
+  // Coming-soon cards: not clickable, badge on cover, no price/buy.
+  if (book.comingSoon) {
+    return (
+      <article className="flex flex-col">
+        <Book3D book={book} maxTilt={12} badge={t.coming.badge} />
+        <div className="mt-7 flex flex-1 flex-col">
+          <h3 className="font-serif text-2xl font-semibold leading-tight text-bone">
+            {title}
+          </h3>
+          <p className="mt-2 flex-1 text-sm leading-relaxed text-bone-soft/80">
+            {book.tagline[lang]}
+          </p>
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-widest text-gold">
+              {t.coming.badge}
+            </span>
+            <Link
+              href="/contact"
+              className="text-sm font-medium text-bone-soft transition-colors hover:text-gold-light"
+            >
+              {t.coming.notify}
+            </Link>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article className="group flex flex-col">
-      <Link href={`/books/${book.slug}`} className="block">
-        <div className="transition-transform duration-300 group-hover:-translate-y-1">
-          <BookCover book={book} priority={priority} />
-        </div>
+      <Link href={`/books/${book.slug}`} className="block" aria-label={title}>
+        <Book3D book={book} maxTilt={14} />
       </Link>
 
-      <div className="mt-4 flex flex-1 flex-col">
-        <h3 className="font-serif text-xl font-semibold text-ink">
-          <Link href={`/books/${book.slug}`} className="hover:text-burgundy">
-            {book.title}
+      <div className="mt-7 flex flex-1 flex-col">
+        <h3 className="font-serif text-2xl font-semibold leading-tight text-bone">
+          <Link href={`/books/${book.slug}`} className="hover:text-gold-light">
+            {title}
           </Link>
         </h3>
-        <p className="mt-1 flex-1 text-sm leading-relaxed text-ink-faint">
-          {book.tagline}
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-bone-soft/80">
+          {book.tagline[lang]}
         </p>
-        <div className="mt-3 flex items-center justify-between">
-          {book.price && (
-            <span className="text-sm font-semibold text-ink">{book.price}</span>
-          )}
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-sm font-semibold text-gold">
+            {book.price[lang]}
+          </span>
           <Link
             href={`/books/${book.slug}`}
-            className="text-sm font-medium text-burgundy hover:text-burgundy-dark"
+            className="text-sm font-medium text-bone-soft transition-colors hover:text-gold-light"
           >
-            View book →
+            {t.common.readMore}
           </Link>
         </div>
       </div>
