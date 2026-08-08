@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper text-ink antialiased;
+    font-feature-settings: "kern", "liga";
+  }
+
+  ::selection {
+    @apply bg-burgundy/20 text-ink;
+  }
+}
+
+@layer components {
+  /* Reusable section eyebrow label */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-burgundy;
+  }
+}
