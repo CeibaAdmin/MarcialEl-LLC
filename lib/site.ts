@@ -15,7 +15,9 @@ export const site = {
   description:
     "El hogar oficial de Marcial — autor de narrativa y ensayo. Explora los libros, conoce la historia detrás del seudónimo y entérate cuando llegue el próximo.",
   url: "https://marcial-el-llc.vercel.app",
-  email: "hola@ejemplo.com",
+  // Public contact address — also where newsletter signups are delivered
+  // (see app/api/subscribe/route.ts).
+  email: "marcialelllc@gmail.com",
   social: {
     instagram: "", // e.g. "https://instagram.com/marcial.escribe"
     goodreads: "",

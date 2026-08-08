@@ -51,10 +51,24 @@ image in `/public` (e.g. `public/covers/embers.jpg`) and set
 - `/about` — the author's story
 - `/contact` — newsletter signup + direct contact
 
+## Newsletter signups
+
+The signup form posts to `app/api/subscribe/route.ts`, which emails each new
+subscriber's address to `site.email` (`lib/site.ts`) through
+[Resend](https://resend.com).
+
+Set these in the Vercel project (Settings → Environment Variables) and in a local
+`.env.local`:
+
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `RESEND_API_KEY` | yes | From the Resend dashboard. Without it the form shows an error instead of silently dropping signups. |
+| `NEWSLETTER_FROM_EMAIL` | no | "From" address, e.g. `Marcial <hola@tudominio.com>`. Defaults to Resend's shared `onboarding@resend.dev`, which works before a domain is verified. |
+
+Replies go to the subscriber, so you can answer straight from the notification email.
+
 ## Things to wire up later (optional)
 
-- **Newsletter** — `components/NewsletterForm.tsx` is a placeholder; connect it to an
-  email provider (Mailchimp, ConvertKit, Buttondown, Resend, …).
 - **Checkout** — "Buy" buttons currently link out (`buyUrl`). To sell on-site, add
   Stripe Checkout.
 - **Domain** — point a custom domain in the Vercel project settings, then update
