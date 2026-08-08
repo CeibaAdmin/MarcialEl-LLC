@@ -1,40 +1,36 @@
 import Link from "next/link";
 import type { Book } from "@/data/books";
-import BookCover from "./BookCover";
+import Book3D from "./Book3D";
 
-export default function BookCard({
-  book,
-  priority = false,
-}: {
-  book: Book;
-  priority?: boolean;
-}) {
+export default function BookCard({ book }: { book: Book }) {
   return (
     <article className="group flex flex-col">
-      <Link href={`/books/${book.slug}`} className="block">
-        <div className="transition-transform duration-300 group-hover:-translate-y-1">
-          <BookCover book={book} priority={priority} />
-        </div>
+      <Link
+        href={`/books/${book.slug}`}
+        className="block"
+        aria-label={`View ${book.title}`}
+      >
+        <Book3D book={book} maxTilt={14} />
       </Link>
 
-      <div className="mt-4 flex flex-1 flex-col">
-        <h3 className="font-serif text-xl font-semibold text-ink">
-          <Link href={`/books/${book.slug}`} className="hover:text-burgundy">
+      <div className="mt-7 flex flex-1 flex-col">
+        <h3 className="font-serif text-2xl font-semibold leading-tight text-bone">
+          <Link href={`/books/${book.slug}`} className="hover:text-gold-light">
             {book.title}
           </Link>
         </h3>
-        <p className="mt-1 flex-1 text-sm leading-relaxed text-ink-faint">
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-bone-soft/80">
           {book.tagline}
         </p>
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-4 flex items-center justify-between">
           {book.price && (
-            <span className="text-sm font-semibold text-ink">{book.price}</span>
+            <span className="text-sm font-semibold text-gold">{book.price}</span>
           )}
           <Link
             href={`/books/${book.slug}`}
-            className="text-sm font-medium text-burgundy hover:text-burgundy-dark"
+            className="text-sm font-medium text-bone-soft transition-colors hover:text-gold-light"
           >
-            View book →
+            Read more →
           </Link>
         </div>
       </div>

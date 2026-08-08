@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/Container";
+import SectionHeading from "@/components/SectionHeading";
+import Reveal from "@/components/Reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -10,50 +12,56 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <section className="py-16 sm:py-24">
-      <Container className="max-w-3xl">
-        <p className="eyebrow">About the author</p>
-        <h1 className="mt-3 font-serif text-5xl font-semibold text-ink">
-          The story behind the name
-        </h1>
+    <section className="relative overflow-hidden pb-24 pt-36 sm:pt-40">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-16 left-0 h-[30rem] w-[30rem] rounded-full bg-gold/10 blur-[130px]"
+      />
+      <Container className="relative max-w-3xl">
+        <SectionHeading eyebrow="About the author" title="The story behind the name" />
 
         {/* PLACEHOLDER BIO — replace with Marcial's real story. */}
-        <div className="mt-8 space-y-6 text-lg leading-relaxed text-ink-soft">
-          <p>
-            <span className="font-serif text-2xl text-ink">Marcial</span> is the pen
-            name of a writer who has spent a lifetime listening — to harbors, to
-            grandmothers, to the quiet rooms where families keep their histories.
-          </p>
-          <p>
-            (PLACEHOLDER) Add the real biography here: where the author grew up, what
-            drew them to writing, the themes they return to, any awards or previous
-            work, and why they chose to publish under a pseudonym.
-          </p>
-          <p>
-            (PLACEHOLDER) A second paragraph can speak to the author&rsquo;s craft and
-            influences — the writers who shaped them, the discipline of their daily
-            practice, and what readers can expect from the books.
-          </p>
-          <blockquote className="border-l-2 border-burgundy pl-6 font-serif text-2xl italic text-ink">
-            &ldquo;I write under another name so the stories can arrive without me in
-            the way.&rdquo;
-          </blockquote>
+        <div className="mt-10 space-y-7 text-lg leading-relaxed text-bone-soft/85">
+          <Reveal>
+            <p>
+              <span className="font-serif text-2xl text-bone">Marcial</span> is the
+              pen name of a writer who has spent a lifetime listening — to harbors,
+              to grandmothers, to the quiet rooms where families keep their
+              histories.
+            </p>
+          </Reveal>
+          <Reveal index={1}>
+            <p>
+              (PLACEHOLDER) Add the real biography here: where the author grew up,
+              what drew them to writing, the themes they return to, any awards or
+              previous work, and why they chose to publish under a pseudonym.
+            </p>
+          </Reveal>
+          <Reveal index={2}>
+            <blockquote className="border-l-2 border-gold pl-6 font-serif text-3xl italic leading-snug text-gold-light">
+              &ldquo;I write under another name so the stories can arrive without
+              me in the way.&rdquo;
+            </blockquote>
+          </Reveal>
+          <Reveal index={3}>
+            <p>
+              (PLACEHOLDER) A closing paragraph can speak to craft and influences —
+              the writers who shaped them, the discipline of their daily practice,
+              and what readers can expect from the books.
+            </p>
+          </Reveal>
         </div>
 
-        <div className="mt-12 flex flex-wrap gap-4">
-          <Link
-            href="/books"
-            className="rounded-full bg-burgundy px-7 py-3 text-sm font-medium text-paper transition-colors hover:bg-burgundy-dark"
-          >
-            Read the books
-          </Link>
-          <Link
-            href="/contact"
-            className="rounded-full border border-ink/20 px-7 py-3 text-sm font-medium text-ink transition-colors hover:border-ink/40"
-          >
-            Get in touch
-          </Link>
-        </div>
+        <Reveal index={4}>
+          <div className="mt-14 flex flex-wrap gap-4">
+            <Link href="/books" className="btn-gold">
+              Read the books
+            </Link>
+            <Link href="/contact" className="btn-ghost">
+              Get in touch
+            </Link>
+          </div>
+        </Reveal>
       </Container>
     </section>
   );

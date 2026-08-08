@@ -3,23 +3,150 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
+
   html {
+    /* Lenis handles smooth scroll; keep native smooth as fallback. */
     scroll-behavior: smooth;
   }
 
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
   body {
-    @apply bg-paper text-ink antialiased;
+    @apply bg-night text-bone antialiased;
     font-feature-settings: "kern", "liga";
+    overflow-x: hidden;
   }
 
   ::selection {
-    @apply bg-burgundy/20 text-ink;
+    @apply bg-gold/30 text-bone;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0b0a09;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #33302a;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4a463d;
+  }
+
+  :focus-visible {
+    outline: 2px solid #c79a54;
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
 @layer components {
-  /* Reusable section eyebrow label */
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-burgundy;
+    @apply text-xs font-semibold uppercase tracking-widest text-gold;
+  }
+
+  /* Gold gradient text for accents */
+  .text-gold-gradient {
+    background: linear-gradient(120deg, #e6c589 0%, #c79a54 45%, #9c7638 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Shimmering gold used sparingly on hero words */
+  .text-shimmer {
+    background: linear-gradient(
+      100deg,
+      #c79a54 20%,
+      #f4ede1 40%,
+      #e6c589 55%,
+      #c79a54 70%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    @apply animate-shimmer;
+  }
+
+  /* Thin hairline divider */
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-bone-soft/20 to-transparent;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3 text-sm font-semibold text-night transition-colors duration-300 hover:bg-gold-light;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-bone-soft/25 px-7 py-3 text-sm font-medium text-bone transition-colors duration-300 hover:border-gold/60 hover:text-gold-light;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .perspective {
+    perspective: 1200px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
+
+/* Film grain overlay */
+.grain-overlay {
+  position: fixed;
+  inset: -150%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  will-change: transform;
+}
+
+/* Vignette to focus attention toward center/books */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 40%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain-overlay {
+    display: none;
   }
 }
