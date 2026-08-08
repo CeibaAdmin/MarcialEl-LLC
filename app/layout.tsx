@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollProgress from "@/components/ScrollProgress";
+import { LanguageProvider } from "@/lib/i18n";
 import { site } from "@/lib/site";
 
 const serif = Cormorant_Garamond({
@@ -47,15 +48,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="es" className={`${serif.variable} ${sans.variable}`}>
       <body className="flex min-h-screen flex-col font-sans">
-        <SmoothScroll />
-        <ScrollProgress />
-        <div aria-hidden className="grain-overlay animate-grain" />
-        <div aria-hidden className="vignette" />
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <SmoothScroll />
+          <ScrollProgress />
+          <div aria-hidden className="grain-overlay animate-grain" />
+          <div aria-hidden className="vignette" />
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

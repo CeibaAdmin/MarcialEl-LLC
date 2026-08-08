@@ -4,46 +4,49 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import BookCard from "./BookCard";
 import type { Book } from "@/data/books";
+import { useLang, type Loc } from "@/lib/i18n";
 
 const easing = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Catalog grid with an animated genre filter. Books animate in/out with layout
- * transitions as the filter changes.
+ * Catalog grid with an animated genre filter. Genres are compared by their
+ * language-independent Spanish key; labels render in the current language.
  */
 export default function BooksGrid({
   books,
   genres,
 }: {
   books: Book[];
-  genres: string[];
+  genres: Loc[];
 }) {
-  const [active, setActive] = useState<string>("All");
-  const filters = ["All", ...genres];
+  const { lang, t } = useLang();
+  const [active, setActive] = useState<string>("all"); // "all" or a genre.es key
+
+  const filters = [{ key: "all", label: t.books.all }, ...genres.map((g) => ({ key: g.es, label: g[lang] }))];
   const shown =
-    active === "All" ? books : books.filter((b) => b.meta?.genre === active);
+    active === "all" ? books : books.filter((b) => b.meta?.genre?.es === active);
 
   return (
     <div>
       <div className="mb-14 flex flex-wrap gap-3">
         {filters.map((f) => (
           <button
-            key={f}
-            onClick={() => setActive(f)}
+            key={f.key}
+            onClick={() => setActive(f.key)}
             className={`relative rounded-full border px-5 py-2 text-sm font-medium transition-colors duration-300 ${
-              active === f
+              active === f.key
                 ? "border-gold text-night"
                 : "border-bone-soft/20 text-bone-soft/80 hover:border-gold/50 hover:text-bone"
             }`}
           >
-            {active === f && (
+            {active === f.key && (
               <motion.span
                 layoutId="filter-pill"
                 className="absolute inset-0 -z-10 rounded-full bg-gold"
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               />
             )}
-            {f}
+            {f.label}
           </button>
         ))}
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "@/lib/i18n";
 
 /**
  * Placeholder newsletter signup. It does NOT send anywhere yet — it just shows a
@@ -9,6 +10,7 @@ import { useState } from "react";
  * <form action> at a Next.js route handler / server action.
  */
 export default function NewsletterForm() {
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
 
@@ -22,8 +24,7 @@ export default function NewsletterForm() {
   if (done) {
     return (
       <p className="rounded-2xl border border-gold/30 bg-night-700/60 px-5 py-4 text-sm text-bone-soft">
-        Thank you — you&rsquo;re on the list. (Demo only: this form isn&rsquo;t
-        connected to an email service yet.)
+        {t.newsletter.thanks}
       </p>
     );
   }
@@ -39,11 +40,11 @@ export default function NewsletterForm() {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@example.com"
+        placeholder={t.newsletter.placeholder}
         className="w-full rounded-full border border-bone-soft/20 bg-night-700/60 px-5 py-3 text-sm text-bone outline-none transition-colors placeholder:text-bone-soft/40 focus:border-gold"
       />
       <button type="submit" className="btn-gold shrink-0">
-        Subscribe
+        {t.newsletter.subscribe}
       </button>
     </form>
   );

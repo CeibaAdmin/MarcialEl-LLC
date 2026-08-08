@@ -10,7 +10,7 @@ import Book3D from "./Book3D";
 import MagneticButton from "./MagneticButton";
 import Container from "./Container";
 import type { Book } from "@/data/books";
-import { site } from "@/lib/site";
+import { useLang } from "@/lib/i18n";
 
 const easing = [0.22, 1, 0.36, 1] as const;
 
@@ -24,6 +24,7 @@ const item: Variants = {
 };
 
 export default function Hero({ book }: { book: Book }) {
+  const { t } = useLang();
   const mx = useMotionValue(50);
   const my = useMotionValue(30);
   const spotlight = useMotionTemplate`radial-gradient(600px circle at ${mx}% ${my}%, rgba(199,154,84,0.12), transparent 70%)`;
@@ -39,13 +40,11 @@ export default function Hero({ book }: { book: Book }) {
       onMouseMove={onMove}
       className="relative flex min-h-screen items-center overflow-hidden pt-20"
     >
-      {/* Ambient background */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -left-40 top-10 h-[36rem] w-[36rem] rounded-full bg-burgundy/20 blur-[120px]" />
         <div className="absolute -right-32 bottom-0 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[120px]" />
         <div className="absolute left-1/2 top-1/3 h-[24rem] w-[24rem] -translate-x-1/2 rounded-full bg-ember/10 blur-[100px]" />
       </div>
-      {/* Cursor spotlight */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -55,33 +54,32 @@ export default function Hero({ book }: { book: Book }) {
       <Container className="relative grid gap-16 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <motion.div variants={container} initial="hidden" animate="show">
           <motion.p variants={item} className="eyebrow">
-            {site.hero.eyebrow}
+            {t.hero.eyebrow}
           </motion.p>
           <motion.h1
             variants={item}
             className="mt-5 font-serif text-6xl font-semibold leading-[0.98] text-bone text-balance sm:text-7xl lg:text-[5.5rem]"
           >
-            {site.hero.headlineLead}{" "}
-            <span className="text-shimmer">{site.hero.headlineAccent}</span>{" "}
-            {site.hero.headlineTail}
+            {t.hero.lead}{" "}
+            <span className="text-shimmer">{t.hero.accent}</span>{" "}
+            {t.hero.tail}
           </motion.h1>
           <motion.p
             variants={item}
             className="mt-7 max-w-md text-lg leading-relaxed text-bone-soft/80"
           >
-            {site.hero.sub}
+            {t.hero.sub}
           </motion.p>
           <motion.div variants={item} className="mt-10 flex flex-wrap gap-4">
             <MagneticButton href="/books" variant="gold">
-              Browse the collection
+              {t.cta.browse}
             </MagneticButton>
             <MagneticButton href="/about" variant="ghost">
-              Meet Marcial
+              {t.cta.meet}
             </MagneticButton>
           </motion.div>
         </motion.div>
 
-        {/* Floating hero book */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -92,7 +90,6 @@ export default function Hero({ book }: { book: Book }) {
         </motion.div>
       </Container>
 
-      {/* Scroll cue */}
       <motion.div
         aria-hidden
         initial={{ opacity: 0 }}

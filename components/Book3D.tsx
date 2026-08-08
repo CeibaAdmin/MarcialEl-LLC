@@ -108,7 +108,7 @@ export default function Book3D({
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={book.coverImage}
-                alt={`Cover of ${book.title}`}
+                alt={`${book.titleEs} — cover`}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -162,11 +162,11 @@ function ProceduralCover({ book }: { book: Book }) {
 
       <div className="relative">
         <h3 className="font-serif text-[1.5rem] font-semibold leading-[1.05] drop-shadow-sm sm:text-[1.75rem]">
-          {book.title}
+          {book.titleEs}
         </h3>
         {book.subtitle && (
           <p className="mt-2 text-[0.55rem] uppercase tracking-[0.25em] text-bone/70 sm:text-[0.65rem]">
-            {book.subtitle}
+            {book.subtitle.es}
           </p>
         )}
       </div>
@@ -174,7 +174,7 @@ function ProceduralCover({ book }: { book: Book }) {
       <div className="relative flex items-center gap-2">
         <span className="h-px w-8 bg-gold/50" />
         <span className="text-[0.5rem] uppercase tracking-[0.25em] text-bone/60 sm:text-[0.6rem]">
-          {book.meta?.genre ?? "Fiction"}
+          {book.meta?.genre?.es ?? "Ficción"}
         </span>
       </div>
     </div>

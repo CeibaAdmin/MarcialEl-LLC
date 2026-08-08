@@ -4,10 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Container from "./Container";
-import { nav, site } from "@/lib/site";
+import LanguageToggle from "./LanguageToggle";
+import { site } from "@/lib/site";
+import { useLang } from "@/lib/i18n";
 
 export default function Nav() {
   const pathname = usePathname();
+  const { t } = useLang();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -17,6 +20,13 @@ export default function Nav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const nav = [
+    { href: "/", label: t.nav.home },
+    { href: "/books", label: t.nav.books },
+    { href: "/about", label: t.nav.about },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -58,37 +68,41 @@ export default function Nav() {
               />
             </Link>
           ))}
+          <LanguageToggle />
           <Link href="/books" className="btn-gold !px-6 !py-2.5">
-            Shop books
+            {t.nav.shop}
           </Link>
         </nav>
 
         {/* Mobile toggle */}
-        <button
-          type="button"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="inline-flex h-10 w-10 items-center justify-center text-bone md:hidden"
-        >
-          <div className="space-y-1.5">
-            <span
-              className={`block h-0.5 w-6 bg-current transition-transform duration-300 ${
-                open ? "translate-y-2 rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-6 bg-current transition-opacity duration-300 ${
-                open ? "opacity-0" : ""
-              }`}
-            />
-            <span
-              className={`block h-0.5 w-6 bg-current transition-transform duration-300 ${
-                open ? "-translate-y-2 -rotate-45" : ""
-              }`}
-            />
-          </div>
-        </button>
+        <div className="flex items-center gap-3 md:hidden">
+          <LanguageToggle />
+          <button
+            type="button"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex h-10 w-10 items-center justify-center text-bone"
+          >
+            <div className="space-y-1.5">
+              <span
+                className={`block h-0.5 w-6 bg-current transition-transform duration-300 ${
+                  open ? "translate-y-2 rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-current transition-opacity duration-300 ${
+                  open ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block h-0.5 w-6 bg-current transition-transform duration-300 ${
+                  open ? "-translate-y-2 -rotate-45" : ""
+                }`}
+              />
+            </div>
+          </button>
+        </div>
       </Container>
 
       {/* Mobile menu */}
@@ -112,7 +126,7 @@ export default function Nav() {
               onClick={() => setOpen(false)}
               className="btn-gold mt-3 w-full"
             >
-              Shop books
+              {t.nav.shop}
             </Link>
           </Container>
         </nav>

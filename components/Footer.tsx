@@ -1,13 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import Container from "./Container";
-import { nav, site } from "@/lib/site";
+import { site } from "@/lib/site";
+import { useLang } from "@/lib/i18n";
 
 export default function Footer() {
+  const { t } = useLang();
   const year = 2026; // Update yearly if desired.
+
+  const nav = [
+    { href: "/", label: t.nav.home },
+    { href: "/books", label: t.nav.books },
+    { href: "/about", label: t.nav.about },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   return (
     <footer className="relative mt-32 border-t border-bone-soft/10 bg-night-800">
-      {/* ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute -top-24 left-1/2 h-48 w-[40rem] max-w-[90%] -translate-x-1/2 rounded-[50%] bg-gold/10 blur-3xl"
@@ -19,15 +29,17 @@ export default function Footer() {
               {site.penName}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-bone-soft/70">
-              {site.tagline}
+              {t.footer.tagline}
             </p>
             <Link href="/contact" className="btn-ghost mt-6">
-              Join the reader list
+              {t.footer.joinList}
             </Link>
           </div>
 
           <nav className="flex flex-col gap-3">
-            <p className="text-xs uppercase tracking-widest text-gold">Explore</p>
+            <p className="text-xs uppercase tracking-widest text-gold">
+              {t.footer.explore}
+            </p>
             {nav.map((item) => (
               <Link
                 key={item.href}
@@ -43,10 +55,8 @@ export default function Footer() {
         <div className="hairline" />
 
         <div className="flex flex-col gap-2 py-8 text-xs text-bone-soft/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {site.legalName}. All rights reserved.
-          </p>
-          <p>Written under the pen name {site.penName}.</p>
+          <p>{t.footer.rights(year)}</p>
+          <p>{t.footer.penNote}</p>
         </div>
       </Container>
     </footer>

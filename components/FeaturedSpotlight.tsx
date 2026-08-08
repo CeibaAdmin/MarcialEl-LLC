@@ -6,12 +6,14 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Book3D from "./Book3D";
 import Container from "./Container";
 import type { Book } from "@/data/books";
+import { bookTitle } from "@/data/books";
+import { useLang } from "@/lib/i18n";
 
 /**
- * A cinematic, scroll-driven showcase of a single lead title. The cover and
- * copy drift at different speeds as the section passes through the viewport.
+ * A cinematic, scroll-driven showcase of a single lead title.
  */
 export default function FeaturedSpotlight({ book }: { book: Book }) {
+  const { lang, t } = useLang();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -36,27 +38,26 @@ export default function FeaturedSpotlight({ book }: { book: Book }) {
         </motion.div>
 
         <motion.div style={{ y: textY, opacity: titleOpacity }} className="order-1 lg:order-2">
-          <p className="eyebrow">The latest</p>
+          <p className="eyebrow">{t.spotlight.eyebrow}</p>
           <h2 className="mt-4 font-serif text-5xl font-semibold leading-tight text-bone sm:text-6xl">
-            {book.title}
+            {bookTitle(book, lang)}
           </h2>
           {book.excerpt && (
             <p className="mt-6 max-w-md font-serif text-2xl italic leading-snug text-gold-light">
-              {book.excerpt}
+              {book.excerpt[lang]}
             </p>
           )}
           <p className="mt-6 max-w-md leading-relaxed text-bone-soft/80">
-            {book.description[0]}
+            {book.description[lang][0]}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-6">
             <Link href={`/books/${book.slug}`} className="btn-gold">
-              Discover this book
+              {t.spotlight.discover}
             </Link>
-            {book.price && (
-              <span className="text-sm text-bone-soft/70">
-                From <span className="font-semibold text-bone">{book.price}</span>
-              </span>
-            )}
+            <span className="text-sm text-bone-soft/70">
+              {t.common.from}{" "}
+              <span className="font-semibold text-bone">{book.price[lang]}</span>
+            </span>
           </div>
         </motion.div>
       </Container>
