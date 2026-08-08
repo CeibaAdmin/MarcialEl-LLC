@@ -3,9 +3,9 @@ import type { Lang, Loc } from "@/lib/i18n";
 // ---------------------------------------------------------------------------
 // BOOK CATALOG — Marcial's real books
 // ---------------------------------------------------------------------------
-// Titles, cover images and the Spanish taglines are REAL (the taglines come
-// from the covers themselves). Descriptions, excerpts, prices and buy links are
-// clearly-marked BILINGUAL PLACEHOLDERS — replace them with the real details
+// Titles, cover images, Amazon buy links and the Spanish taglines are REAL (the
+// taglines come from the covers themselves). Descriptions, excerpts and prices
+// are clearly-marked BILINGUAL PLACEHOLDERS — replace them with the real details
 // (same shape, no code changes needed).
 //
 // The last 3 entries are `comingSoon: true` — upcoming titles with no cover yet
@@ -42,11 +42,12 @@ const FICCION: Loc = { es: "Ficción", en: "Fiction" };
 const CRECIMIENTO: Loc = { es: "Crecimiento personal", en: "Personal growth" };
 const FORMAT: Loc = { es: "Tapa blanda", en: "Paperback" };
 
-function links(slug: string): BuyLink[] {
-  return [
-    { label: "Amazon", url: `https://example.com/amazon/${slug}` },
-    { label: "Bookshop.org", url: `https://example.com/bookshop/${slug}` },
-  ];
+/**
+ * Canonical Amazon product URL for an ASIN (search/tracking query params from
+ * the shared listing URLs are stripped — /dp/<asin> resolves to the same page).
+ */
+function amazon(asin: string): string {
+  return `https://www.amazon.com/dp/${asin}`;
 }
 
 // Placeholder synopsis paragraphs (bilingual). Replace per book with real copy.
@@ -78,8 +79,7 @@ export const books: Book[] = [
       en: "“Every bargain has a price; the invisible ones cost the most.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/el-pacto-invisible",
-    buyLinks: links("el-pacto-invisible"),
+    buyUrl: amazon("8410907224"),
     coverImage: "/covers/el-pacto-invisible.png",
     coverFrom: "#c9a15a",
     coverTo: "#171310",
@@ -100,8 +100,7 @@ export const books: Book[] = [
       en: "“Sometimes the one who knows least sees the most.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/el-tonto-iluminado",
-    buyLinks: links("el-tonto-iluminado"),
+    buyUrl: amazon("8410905957"),
     coverImage: "/covers/el-tonto-iluminado.png",
     coverFrom: "#d8a24a",
     coverTo: "#1a140c",
@@ -122,8 +121,7 @@ export const books: Book[] = [
       en: "“The ego never has enough; that is why it is always hungry.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/el-banquete-del-ego",
-    buyLinks: links("el-banquete-del-ego"),
+    buyUrl: amazon("841090649X"),
     coverImage: "/covers/el-banquete-del-ego.png",
     coverFrom: "#b8543f",
     coverTo: "#1a100c",
@@ -145,8 +143,7 @@ export const books: Book[] = [
       en: "“To dream is not to flee the world, but to learn to inhabit it.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/el-despertar-de-los-sonadores",
-    buyLinks: links("el-despertar-de-los-sonadores"),
+    buyUrl: amazon("8410284782"),
     coverImage: "/covers/el-despertar-de-los-sonadores.png",
     coverFrom: "#2f9e8f",
     coverTo: "#141a1f",
@@ -170,8 +167,7 @@ export const books: Book[] = [
       en: "“He forgave so long without knowing it that he forgot how to hold a grudge.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/el-hombre-que-no-sabia-que-perdonaba",
-    buyLinks: links("el-hombre-que-no-sabia-que-perdonaba"),
+    buyUrl: amazon("8410907216"),
     coverImage: "/covers/el-hombre-que-no-sabia-que-perdonaba.png",
     coverFrom: "#7b6cc0",
     coverTo: "#14121f",
@@ -192,8 +188,7 @@ export const books: Book[] = [
       en: "“Some doors only open from the inside.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/el-mensaje-a-traves-de-la-puerta",
-    buyLinks: links("el-mensaje-a-traves-de-la-puerta"),
+    buyUrl: amazon("8410392844"),
     coverImage: "/covers/el-mensaje-a-traves-de-la-puerta.png",
     coverFrom: "#3f7bb0",
     coverTo: "#0f1620",
@@ -214,8 +209,7 @@ export const books: Book[] = [
       en: "“Whoever truly laughs no longer fears anyone.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/la-revolucion-de-la-risa",
-    buyLinks: links("la-revolucion-de-la-risa"),
+    buyUrl: amazon("8410906481"),
     coverImage: "/covers/la-revolucion-de-la-risa.png",
     coverFrom: "#d1a13e",
     coverTo: "#1a150b",
@@ -235,8 +229,7 @@ export const books: Book[] = [
       en: "“No one is as imprisoned as the one who believes he is free.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/prisioneros-dementes",
-    buyLinks: links("prisioneros-dementes"),
+    buyUrl: amazon("8410905094"),
     coverImage: "/covers/prisioneros-dementes.png",
     coverFrom: "#9a4038",
     coverTo: "#160f0e",
@@ -256,8 +249,7 @@ export const books: Book[] = [
       en: "“They gave me freedom the way one hands down a sentence.”",
     },
     price: PRICE,
-    buyUrl: "https://example.com/buy/condenado-a-morir-en-libertad",
-    buyLinks: links("condenado-a-morir-en-libertad"),
+    buyUrl: amazon("1662488785"),
     coverImage: "/covers/condenado-a-morir-en-libertad.png",
     coverFrom: "#8a8f98",
     coverTo: "#111316",
