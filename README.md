@@ -53,19 +53,32 @@ image in `/public` (e.g. `public/covers/embers.jpg`) and set
 
 ## Newsletter signups
 
-The signup form posts to `app/api/subscribe/route.ts`, which emails each new
-subscriber's address to `site.email` (`lib/site.ts`) through
-[Resend](https://resend.com).
+The signup form posts to `app/api/subscribe/route.ts`, which does two things through
+[Resend](https://resend.com):
 
-Set these in the Vercel project (Settings → Environment Variables) and in a local
-`.env.local`:
+1. **Adds the reader to an Audience** — the stored mailing list.
+2. **Emails the address to `site.email`** (`lib/site.ts`) so each signup also lands in
+   the inbox. Replies go to the subscriber, so you can answer from that notification.
+
+### One-time setup
+
+1. Create a Resend account and an API key.
+2. In Resend → **Audiences**, create an audience and copy its ID.
+3. Add both to the Vercel project (Settings → Environment Variables) and to a local
+   `.env.local`:
 
 | Variable | Required | Notes |
 | --- | --- | --- |
-| `RESEND_API_KEY` | yes | From the Resend dashboard. Without it the form shows an error instead of silently dropping signups. |
+| `RESEND_API_KEY` | yes | Without it the form shows an error instead of silently dropping signups. |
+| `RESEND_AUDIENCE_ID` | yes | The audience readers are added to. If it's missing, signups are still emailed to you but **not stored anywhere** — the route logs a warning saying so. |
 | `NEWSLETTER_FROM_EMAIL` | no | "From" address, e.g. `Marcial <hola@tudominio.com>`. Defaults to Resend's shared `onboarding@resend.dev`, which works before a domain is verified. |
 
-Replies go to the subscriber, so you can answer straight from the notification email.
+### Emailing the list
+
+Resend → **Broadcasts** → pick the audience → write and send. Unsubscribe links are
+injected by Resend and unsubscribes are honored automatically, so there's nothing to
+build. Contacts can be exported to CSV from the Audiences page if you ever switch
+providers.
 
 ## Things to wire up later (optional)
 
