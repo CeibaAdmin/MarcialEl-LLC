@@ -3,9 +3,9 @@ import type { Lang, Loc } from "@/lib/i18n";
 // ---------------------------------------------------------------------------
 // BOOK CATALOG — Marcial's real books
 // ---------------------------------------------------------------------------
-// Titles, cover images, Amazon buy links and the Spanish taglines are REAL (the
-// taglines come from the covers themselves). Descriptions, excerpts and prices
-// are clearly-marked BILINGUAL PLACEHOLDERS — replace them with the real details
+// Titles, cover images, prices, Amazon buy links and the Spanish taglines are
+// REAL (the taglines come from the covers themselves). Descriptions and excerpts
+// are clearly-marked BILINGUAL PLACEHOLDERS — replace them with the real copy
 // (same shape, no code changes needed).
 //
 // The last 3 entries are `comingSoon: true` — upcoming titles with no cover yet
@@ -37,7 +37,15 @@ export type Book = {
   comingSoon?: boolean;
 };
 
-const PRICE: Loc = { es: "14,99 €", en: "$14.99" };
+/**
+ * Amazon.com list price in USD, formatted per language — Spanish uses the local
+ * convention (comma decimal, trailing symbol), English the US one. Both state
+ * the same dollar amount, which is what the Amazon buy button charges.
+ */
+function usd(amount: string): Loc {
+  return { es: `${amount.replace(".", ",")} $`, en: `$${amount}` };
+}
+
 const FICCION: Loc = { es: "Ficción", en: "Fiction" };
 const CRECIMIENTO: Loc = { es: "Crecimiento personal", en: "Personal growth" };
 const FORMAT: Loc = { es: "Tapa blanda", en: "Paperback" };
@@ -78,7 +86,7 @@ export const books: Book[] = [
       es: "«Todo trato tiene un precio; los invisibles, el más alto.»",
       en: "“Every bargain has a price; the invisible ones cost the most.”",
     },
-    price: PRICE,
+    price: usd("13.70"),
     buyUrl: amazon("8410907224"),
     coverImage: "/covers/el-pacto-invisible.png",
     coverFrom: "#c9a15a",
@@ -99,7 +107,7 @@ export const books: Book[] = [
       es: "«A veces el que menos sabe es el que más ve.»",
       en: "“Sometimes the one who knows least sees the most.”",
     },
-    price: PRICE,
+    price: usd("17.09"),
     buyUrl: amazon("8410905957"),
     coverImage: "/covers/el-tonto-iluminado.png",
     coverFrom: "#d8a24a",
@@ -120,7 +128,7 @@ export const books: Book[] = [
       es: "«El ego nunca tiene suficiente; por eso siempre tiene hambre.»",
       en: "“The ego never has enough; that is why it is always hungry.”",
     },
-    price: PRICE,
+    price: usd("17.36"),
     buyUrl: amazon("841090649X"),
     coverImage: "/covers/el-banquete-del-ego.png",
     coverFrom: "#b8543f",
@@ -142,7 +150,7 @@ export const books: Book[] = [
       es: "«Soñar no es huir del mundo, es aprender a habitarlo.»",
       en: "“To dream is not to flee the world, but to learn to inhabit it.”",
     },
-    price: PRICE,
+    price: usd("11.00"),
     buyUrl: amazon("8410284782"),
     coverImage: "/covers/el-despertar-de-los-sonadores.png",
     coverFrom: "#2f9e8f",
@@ -166,7 +174,7 @@ export const books: Book[] = [
       es: "«Perdonó tanto tiempo sin saberlo que olvidó cómo guardar rencor.»",
       en: "“He forgave so long without knowing it that he forgot how to hold a grudge.”",
     },
-    price: PRICE,
+    price: usd("14.84"),
     buyUrl: amazon("8410907216"),
     coverImage: "/covers/el-hombre-que-no-sabia-que-perdonaba.png",
     coverFrom: "#7b6cc0",
@@ -187,7 +195,7 @@ export const books: Book[] = [
       es: "«Algunas puertas solo se abren desde dentro.»",
       en: "“Some doors only open from the inside.”",
     },
-    price: PRICE,
+    price: usd("14.00"),
     buyUrl: amazon("8410392844"),
     coverImage: "/covers/el-mensaje-a-traves-de-la-puerta.png",
     coverFrom: "#3f7bb0",
@@ -208,7 +216,7 @@ export const books: Book[] = [
       es: "«Quien ríe de verdad ya no le teme a nadie.»",
       en: "“Whoever truly laughs no longer fears anyone.”",
     },
-    price: PRICE,
+    price: usd("13.72"),
     buyUrl: amazon("8410906481"),
     coverImage: "/covers/la-revolucion-de-la-risa.png",
     coverFrom: "#d1a13e",
@@ -228,7 +236,7 @@ export const books: Book[] = [
       es: "«Nadie está tan preso como el que cree que es libre.»",
       en: "“No one is as imprisoned as the one who believes he is free.”",
     },
-    price: PRICE,
+    price: usd("17.31"),
     buyUrl: amazon("8410905094"),
     coverImage: "/covers/prisioneros-dementes.png",
     coverFrom: "#9a4038",
@@ -248,7 +256,7 @@ export const books: Book[] = [
       es: "«Me dieron la libertad como quien dicta una condena.»",
       en: "“They gave me freedom the way one hands down a sentence.”",
     },
-    price: PRICE,
+    price: usd("59.52"),
     buyUrl: amazon("1662488785"),
     coverImage: "/covers/condenado-a-morir-en-libertad.png",
     coverFrom: "#8a8f98",
