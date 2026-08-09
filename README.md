@@ -56,29 +56,39 @@ image in `/public` (e.g. `public/covers/embers.jpg`) and set
 The signup form posts to `app/api/subscribe/route.ts`, which does two things through
 [Resend](https://resend.com):
 
-1. **Adds the reader to an Audience** — the stored mailing list.
+1. **Stores the reader as a Resend contact** — the mailing list.
 2. **Emails the address to `site.email`** (`lib/site.ts`) so each signup also lands in
    the inbox. Replies go to the subscriber, so you can answer from that notification.
 
+Contacts are global entities keyed by email address, so no audience or segment ID is
+needed — the route posts to Resend's top-level `/contacts` endpoint. (The older
+`/audiences/{id}/contacts` route and its `audience_id` are deprecated; use **Segments**
+if you later want to group contacts.)
+
 ### One-time setup
 
-1. Create a Resend account and an API key.
-2. In Resend → **Audiences**, create an audience and copy its ID.
-3. Add both to the Vercel project (Settings → Environment Variables) and to a local
+1. Create a Resend account.
+2. Create an API key with **Full access** — sending-only keys can send mail but are
+   rejected when writing contacts.
+3. Add it to the Vercel project (Settings → Environment Variables) and to a local
    `.env.local`:
 
 | Variable | Required | Notes |
 | --- | --- | --- |
 | `RESEND_API_KEY` | yes | Without it the form shows an error instead of silently dropping signups. |
-| `RESEND_AUDIENCE_ID` | yes | The audience readers are added to. If it's missing, signups are still emailed to you but **not stored anywhere** — the route logs a warning saying so. |
 | `NEWSLETTER_FROM_EMAIL` | no | "From" address, e.g. `Marcial <hola@tudominio.com>`. Defaults to Resend's shared `onboarding@resend.dev`, which works before a domain is verified. |
+
+Environment variables only apply to new builds — redeploy after adding them.
 
 ### Emailing the list
 
-Resend → **Broadcasts** → pick the audience → write and send. Unsubscribe links are
-injected by Resend and unsubscribes are honored automatically, so there's nothing to
-build. Contacts can be exported to CSV from the Audiences page if you ever switch
-providers.
+Resend → **Broadcasts** → write and send. Unsubscribe links are injected by Resend and
+unsubscribes are honored automatically, so there's nothing to build. Contacts export to
+CSV from the Audience page if you ever switch providers.
+
+Note: until a domain is verified in Resend (Domains → add yours), the shared
+`onboarding@resend.dev` sender can only deliver to the account owner's own address. That
+covers the signup notifications; verify a domain before sending a broadcast to readers.
 
 ## Things to wire up later (optional)
 
