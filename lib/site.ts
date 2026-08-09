@@ -14,7 +14,9 @@ export const site = {
   tagline: "Narrativa y ensayo sobre la mente, el ego y la libertad.",
   description:
     "El hogar oficial de Marcial — autor de narrativa y ensayo. Explora los libros, conoce la historia detrás del seudónimo y entérate cuando llegue el próximo.",
-  url: "https://marcial-el-llc.vercel.app",
+  // Production domain. No trailing slash — `metadataBase` in app/layout.tsx
+  // composes relative paths onto this.
+  url: "https://www.marcialel.com",
   // Public contact address — also where newsletter signups are delivered
   // (see app/api/subscribe/route.ts).
   email: "marcialelllc@gmail.com",
