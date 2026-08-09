@@ -1,20 +1,21 @@
 import { site } from "@/lib/site";
 
 // ---------------------------------------------------------------------------
-// NEWSLETTER SIGNUP → email notification
+// NEWSLETTER SIGNUP → Resend Audience (+ notification email)
 // ---------------------------------------------------------------------------
-// Every submission of the newsletter form is emailed to `site.email` so the new
-// subscriber lands in the inbox. Sending goes through Resend (https://resend.com)
-// over plain fetch — no extra dependency.
+// Each submission does two things:
+//   1. Adds the address to a Resend Audience — the stored reader list. Mail it
+//      later from Resend → Broadcasts; unsubscribe links are handled there.
+//   2. Emails the address to `site.email` so the signup also lands in the inbox.
 //
-// Required env var (set it in the Vercel project → Settings → Environment
-// Variables, and in `.env.local` for local dev):
+// Both go through Resend over plain fetch — no extra dependency.
 //
-//   RESEND_API_KEY=re_...
+// Env vars (Vercel → Settings → Environment Variables, and `.env.local` locally):
 //
-// Optional: NEWSLETTER_FROM_EMAIL — the "From" address. Defaults to Resend's
-// shared onboarding sender, which works without verifying a domain. Once a
-// custom domain is verified in Resend, set this to e.g. "Marcial <hola@tudominio.com>".
+//   RESEND_API_KEY=re_...          required — nothing sends or stores without it
+//   RESEND_AUDIENCE_ID=...         required to store contacts (Resend → Audiences)
+//   NEWSLETTER_FROM_EMAIL=...      optional — defaults to Resend's shared sender,
+//                                  which works without verifying a domain
 // ---------------------------------------------------------------------------
 
 export const runtime = "nodejs";
@@ -44,12 +45,39 @@ export async function POST(request: Request) {
     return Response.json({ ok: false, error: "not_configured" }, { status: 503 });
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
+  const headers = {
+    Authorization: `Bearer ${apiKey}`,
+    "Content-Type": "application/json",
+  };
+
+  // 1. Add the reader to the stored list. This is the part that makes a mailing
+  //    list; the notification below is a convenience. A repeat address is not an
+  //    error — Resend returns the existing contact, and nobody re-subscribing
+  //    should ever see a failure.
+  const audienceId = process.env.RESEND_AUDIENCE_ID;
+  if (audienceId) {
+    const added = await fetch(`https://api.resend.com/audiences/${audienceId}/contacts`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ email, unsubscribed: false }),
+    });
+
+    if (!added.ok) {
+      const detail = await added.text().catch(() => "");
+      console.error(`[subscribe] Resend contacts responded ${added.status}: ${detail}`);
+      return Response.json({ ok: false, error: "signup_failed" }, { status: 502 });
+    }
+  } else {
+    console.warn(
+      `[subscribe] RESEND_AUDIENCE_ID is not set — ${email} was emailed but not added to any list.`,
+    );
+  }
+
+  // 2. Notify the author. Best-effort: if the contact was stored, the signup
+  //    succeeded even when this email fails.
+  const notified = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
+    headers,
     body: JSON.stringify({
       from: process.env.NEWSLETTER_FROM_EMAIL || DEFAULT_FROM,
       to: [site.email],
@@ -64,10 +92,12 @@ export async function POST(request: Request) {
     }),
   });
 
-  if (!res.ok) {
-    const detail = await res.text().catch(() => "");
-    console.error(`[subscribe] Resend responded ${res.status}: ${detail}`);
-    return Response.json({ ok: false, error: "send_failed" }, { status: 502 });
+  if (!notified.ok) {
+    const detail = await notified.text().catch(() => "");
+    console.error(`[subscribe] Resend emails responded ${notified.status}: ${detail}`);
+    if (!audienceId) {
+      return Response.json({ ok: false, error: "send_failed" }, { status: 502 });
+    }
   }
 
   return Response.json({ ok: true });
